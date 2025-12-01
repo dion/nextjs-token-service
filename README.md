@@ -39,7 +39,7 @@ npm run dev
 
 ## Create a Token (POST)
 
-Windows PowerShell example:
+Linux shell example:
 ```linux
 curl -X POST http://localhost:3000/api/tokens \
   -H "Content-Type: application/json" \
@@ -49,7 +49,7 @@ curl -X POST http://localhost:3000/api/tokens \
     "expiresInMinutes": 60
   }'
 ```
-
+Windows PowerShell example:
 ```powershell
 Invoke-RestMethod -Method POST -Uri "http://localhost:3000/api/tokens" `
   -ContentType "application/json" `
@@ -57,12 +57,12 @@ Invoke-RestMethod -Method POST -Uri "http://localhost:3000/api/tokens" `
 ```
 
 ## List Tokens (GET)
-
-```linux
+linux
+```
 curl "http://localhost:3000/api/tokens?userId=123"
 ```
-
-```powershell
+powershell
+```
 Invoke-RestMethod "http://localhost:3000/api/tokens?userId=123"
 ```
 
