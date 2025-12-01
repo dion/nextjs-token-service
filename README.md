@@ -1,36 +1,74 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Token Service – Technical Assignment
 
-## Getting Started
+A minimal token management service built with **Next.js (App Router)** and **TypeScript**.  
+This implementation exposes two API endpoints for creating and listing user tokens, with in-memory storage for simplicity.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 🚀 Tech Stack
+
+- **Next.js 14 (App Router)**
+- **TypeScript**
+- **In-memory storage**
+  - Chosen to keep the project lightweight and easy to run.
+  - Tokens reset on server restart (acceptable for this assignment).
+
+---
+
+## 📦 How to Run the Project
+
+### **Prerequisites**
+- Node.js **>= 18**
+- npm or yarn
+
+### **Install dependencies**
+```sh
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### **Start the development server**
+```sh
+npm run dev 
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### **API is now available at:**
+- POST http://localhost:3000/api/tokens
+- GET http://localhost:3000/api/tokens?userId=<id>
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# 🧪 Testing the API
 
-## Learn More
+## Create a Token (POST)
 
-To learn more about Next.js, take a look at the following resources:
+Windows PowerShell example:
+```linux
+curl -X POST http://localhost:3000/api/tokens \
+  -H "Content-Type: application/json" \
+  -d '{
+    "userId": "123",
+    "scopes": ["read", "write"],
+    "expiresInMinutes": 60
+  }'
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```powershell
+Invoke-RestMethod -Method POST -Uri "http://localhost:3000/api/tokens" `
+  -ContentType "application/json" `
+  -Body '{"userId":"123","scopes":["read","write"],"expiresInMinutes":60}'
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## List Tokens (GET)
 
-## Deploy on Vercel
+```linux
+curl "http://localhost:3000/api/tokens?userId=123"
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```powershell
+Invoke-RestMethod "http://localhost:3000/api/tokens?userId=123"
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# 📝 Assumptions & Simplifications
+
+* **In-memory database** - No persistence is used; tokens disappear when the server restarts. This keeps the focus on API structure and TypeScript design rather than database setup.
+* **Manual validation** - Validation is implemented without external libraries (e.g., Zod) to keep the code minimal and transparent.
+* **Expiration logic** - Expired tokens are filtered out when retrieved. They are not permanently deleted from the store.
+* **UUID generation** - Token IDs and tokens are generated via `crypto.randomUUID()` for simplicity.
